@@ -9,12 +9,11 @@ api = Api(app)
 
 class WeatherZip(Resource):
     def get(self):
-
         zip = request.args.getlist('zip') 
-
         api_key = get_api_key()
         data = get_weather_results(zip[0], api_key)
-        return jsonify({'data': data})
+        formatted_data = select_data(data)
+        return jsonify(formatted_data)
 
 class WeatherCity(Resource):
     def get(self):
@@ -24,7 +23,23 @@ class WeatherCity(Resource):
 
         api_key = get_api_key()
         data = get_weather_results_name(city[0], country[0], api_key)
-        return jsonify({'data': data})
+        formatted_data = select_data(data)
+        return jsonify(formatted_data)
+
+def select_data(data):
+    city = data['name']
+    lat = data['coord']['lat']
+    long = data['coord']['lon']
+    country = data['sys']['country']
+    conditions = data['weather'][0]['main']
+    temp = data['main']['temp']
+    high = data['main']['temp_max']
+    low = data['main']['temp_min']
+    wind_speed = data['wind']['speed']
+    humidity = data['main']['humidity']
+
+    formatted_data = {'City': city, 'Country': country, 'Lat': lat, 'Long': long, 'Temp': temp, 'High_Temp': high, 'Low_Temp': low, 'Conditions': conditions, 'Humidity': humidity, 'Wind_Speed': wind_speed}
+    return formatted_data
 
 def get_api_key():
     config = configparser.ConfigParser()
