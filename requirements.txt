@@ -29,7 +29,6 @@ keyring==10.6.0
 keyrings.alt==3.0
 MarkupSafe==1.1.1
 mysql-connector==2.2.9
-mysql-connector-python==2.1.6
 netifaces==0.10.4
 oauthlib==2.0.6
 pexpect==4.2.1
